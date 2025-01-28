@@ -29,8 +29,28 @@ The logging types should look something similar to the one below
 ## I finished those changes, what now?
 
 After you have made the changes, there is nothing you need to do! Simply load up Minecraft, play with your bot, and the data will get collected automatically!
-Once you play for long enough, ~10 hours of playing or more, make a pull request on Github from this repository, and enter your logs into the "COLLECTED LOGS" folder MAKE SURE TO CHANGE THE NAME OF THE FILE TO YOUR USERNAME BEFORE MAKING THE PULL REQUEST, OR IT WILL BE DENIED. Example: ```Beethoven_reasoning.csv``` or ```Duolingo_vision.csv``` or ```Jimmy_regular.csv```
+Once you play for long enough, ~10 hours of playing or more, make a new dataset repository, on [huggingface](https://huggingface.co/new-dataset), and post a message to [this channel](https://ptb.discord.com/channels/1303399789995626667/1307448366833340508) with a link to your dataset repository.
+MAKE SURE TO CHANGE THE NAME OF THE FILE TO YOUR USERNAME BEFORE MAKING THE PULL REQUEST, OR IT WILL BE DENIED. Example: ```Beethoven_reasoning.csv``` or ```Duolingo_vision.csv``` or ```Jimmy_regular.csv```
 
 ## I have uploaded my logs to the folder, what now?
 
 Now that you have uploaded your logs, there is nothing else you need to do! You can continue to collect more data, or not!
+
+Official TODO list:
+
+# TODO List for LLM Fine-tuning
+
+### Make a larger dataset
+*Of course, more examples, the better the model, will ALWAYS be a work in progress*
+
+### Develop a dataset including vision
+*A Far off need, Andy-vision will eventually be made*
+
+### Make a reasoning dataset
+*Uses Deepseek-R1, or R1 distills to generate thought, to provoke thinking among Andy models, which may improve Andy-mini performance*
+
+### Find GPU's here to tune the models
+*Tuning any model, is very computationally expensive, it took 3 hours to train Andy-3.5 on one epoch using an A100, having someone here provide the resources to do it, both for free and without a time limit can allow us to make the models better*
+
+### Make Andy-Ultra
+*A model which can play Minecraft flawlessly, can reason and has vision*
