@@ -4,46 +4,69 @@ import { join } from 'path';
 // --- Configuration ---
 const LOGS_DIR = './logs';
 
-// --- LOGGING TYPE ---
-
-const CSV_LOG_FILE = join(LOGS_DIR, 'reasoning_logs.csv'); // Logs for adding reasoning
-// const CSV_LOG_FILE = join(LOGS_DIR, 'normal_logs.csv'); // Regular logs
-// const CSV_LOG_FILE = join(LOGS_DIR, 'vision_logs.csv'); // Logs for adding vision
-
-// --------------------
+// --- Log File Paths ---
+const REASONING_LOG_FILE = join(LOGS_DIR, 'reasoning_logs.csv'); // Logs for reasoning
+const NORMAL_LOG_FILE = join(LOGS_DIR, 'normal_logs.csv'); // Regular logs
+const VISION_LOG_FILE = join(LOGS_DIR, 'vision_logs.csv'); // Logs for vision (future logic)
 
 // --- Helper Functions ---
-function ensureDirectoryExistence(dirPath) {
+function ensureDirectoryExistence(dirPath, logFile) {
     if (!existsSync(dirPath)) {
         try {
             mkdirSync(dirPath, { recursive: true });
             console.log(`[Logger] Created directory: ${dirPath}`);
-            if (!existsSync(CSV_LOG_FILE)) {
-                // Write CSV header if the file is newly created
-                writeFileSync(CSV_LOG_FILE, 'input,output\n');
-            }
         } catch (error) {
             console.error(`[Logger] Error creating directory ${dirPath}:`, error);
         }
     }
+
+    if (!existsSync(logFile)) {
+        try {
+            writeFileSync(logFile, 'input,output\n'); // Write CSV header if the file is newly created
+        } catch (error) {
+            console.error(`[Logger] Error creating log file ${logFile}:`, error);
+        }
+    }
+}
+
+// --- Auto-Detection for Log Type ---
+function determineLogFile(response) {
+    if (response.includes('<think>') && response.includes('</think>')) {
+        return REASONING_LOG_FILE; // Reasoning log if output contains <think> tags
+    }
+
+    // Placeholder for vision testing logic
+    // if (/* Vision-specific condition */) {
+    //     return VISION_LOG_FILE; // Vision log if vision condition is met
+    // }
+
+    return NORMAL_LOG_FILE; // Default to normal logs
 }
 
 // --- Main Logging Function ---
 export function log(prompt, response) {
-  // Trim to remove any leading/trailing whitespace for both the prompt and response
+    // Trim inputs to remove leading/trailing whitespace
     const trimmedPrompt = prompt ? prompt.trim() : "";
     const trimmedResponse = response ? response.trim() : "";
-    // Check if either is empty or if they are equal (for some reason)
+
+    // Skip logging if both are empty or if they are identical
     if (!trimmedPrompt && !trimmedResponse || trimmedPrompt === trimmedResponse) {
-      return; // Skip logging if both are empty
+        return;
     }
+
+    // Determine the correct log file
+    const logFile = determineLogFile(trimmedResponse);
+
+    // Ensure the directory and log file exist
+    ensureDirectoryExistence(LOGS_DIR, logFile);
+
+    // Prepare the CSV entry
     const csvEntry = `"${trimmedPrompt.replace(/"/g, '""')}","${trimmedResponse.replace(/"/g, '""')}"\n`;
 
-    // 1. Log to CSV File
+    // Append the entry to the correct log file
     try {
-        ensureDirectoryExistence(LOGS_DIR); // Ensure directory exists before writing
-        appendFileSync(CSV_LOG_FILE, csvEntry);
+        appendFileSync(logFile, csvEntry);
     } catch (error) {
-        console.error(`[Logger] Error writing to CSV log file ${CSV_LOG_FILE}:`, error);
+        console.error(`[Logger] Error writing to CSV log file ${logFile}:`, error);
     }
 }
