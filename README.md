@@ -26,6 +26,9 @@ The logging types should look something similar to the one below
 // --------------------
 ```
 
+Once you have changed ```logger.js``` to the logging settings, put ```logger.js``` into the root file of MindCraft.
+Once ```logger.js``` is in the root file, navigate to src\models and **DELETE** the old API endpoint, such as ```gpt.js``` and insert the new API endpoint, such as ```hyperbolic.js```
+
 ## I finished those changes, what now?
 
 After you have made the changes, there is nothing you need to do! Simply load up Minecraft, play with your bot, and the data will get collected automatically!
