@@ -75,6 +75,18 @@ export class HuggingFace {
                     continue; 
                 }
 
+                // LOGGING:
+                // Only log if the final response doesn't contain typical error signatures
+                if (res && !res.includes("Error:") && !res.includes("exception:")) {
+                    // Prepare the messages array for logging
+                    const logMessages = [{ role: "system", content: systemMessage }, ...turns];
+                    // Log the input (messages) and output (finalRes)
+                    log(JSON.stringify(logMessages), res);
+                } else {
+                    // If there's a potential error, skip logging
+                    console.warn(`Not logging due to potential error in model response: ${res}`);
+                }
+
                 // If both tags appear, remove them (and everything in between)
                 if (hasOpenTag && hasCloseTag) {
                     res = res.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
@@ -93,18 +105,6 @@ export class HuggingFace {
         }
 
         console.log('Received.');
-
-        // LOGGING:
-        // Only log if the final response doesn't contain typical error signatures
-        if (finalRes && !finalRes.includes("Error:") && !finalRes.includes("exception:")) {
-            // Prepare the messages array for logging
-            const logMessages = [{ role: "system", content: systemMessage }, ...turns];
-            // Log the input (messages) and output (finalRes)
-            log(JSON.stringify(logMessages), finalRes);
-        } else {
-            // If there's a potential error, skip logging
-            console.warn(`Not logging due to potential error in model response: ${finalRes}`);
-        }
 
         // Return the final (possibly trimmed) response
         return finalRes;
