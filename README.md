@@ -11,20 +11,7 @@ If you would like to help collect data, download the ```logger.js``` file, and w
 
 ## What do I do once I have installed logger.js, and my API endpoint?
 
-After you downloaded logger.js, as well as all of the endpoints you would like to use, open logger.js, and choose what configuration you are collecting data for.
-If you are collecting regular data, to improve the models, with NO vision NOR reasoning, then uncomment normal_logs.csv
-IF you are collecting a certain type of data, such as reasoning or vision, uncomment that line.
-The logging types should look something similar to the one below
-
-```javascript
-// --- LOGGING TYPE ---
-
-// const CSV_LOG_FILE = join(LOGS_DIR, 'reasoning_logs.csv'); // Logs for adding reasoning
-// const CSV_LOG_FILE = join(LOGS_DIR, 'normal_logs.csv'); // Regular logs
-// const CSV_LOG_FILE = join(LOGS_DIR, 'vision_logs.csv'); // Logs for adding vision CURRENTLY NOT IMPLEMENTED, DO NOT ATTEMPT TO COLLECT VISION DATA
-
-// --------------------
-```
+After you downloaded logger.js, as well as all of the endpoints you would like to use, choose what model you will be using, if you want to add reasoning logs, ONLY Deepseek-R1 and it's distilled models, like LLaMa3.3 Deepseek-R1 distill or the Qwen2.5 32B distill, if you want vision, choose any multimodal model capable of vision inputs, if you want regular, choose any model ***besides*** deepseek-r1 and it's distills.
 
 Once you have changed ```logger.js``` to the logging settings, put ```logger.js``` into the root file of MindCraft.
 Once ```logger.js``` is in the root file, navigate to src\models and **DELETE** the old API endpoint, such as ```gpt.js``` and insert the new API endpoint, such as ```hyperbolic.js```
